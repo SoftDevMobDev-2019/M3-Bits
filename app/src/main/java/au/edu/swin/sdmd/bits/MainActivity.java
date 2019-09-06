@@ -20,31 +20,27 @@ communicate.
  */
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements InputFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final EditText etDecimal = findViewById(R.id.etDecimal);
-
-        Button convert = findViewById(R.id.button);
-        convert.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                Fragment fBinary = new BinaryFragment();
-                Bundle b = new Bundle();
-                b.putString("decimal", etDecimal.getText().toString());
-                fBinary.setArguments(b);
-
-                FragmentManager fm = getSupportFragmentManager();
-                fm.beginTransaction().add(R.id.fragment_output, fBinary).commit();
-
-            }
-        });
+        Fragment fInput = new InputFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().add(R.id.fragment_number, fInput).commit();
     }
 
+    @Override
+    public void onFragmentInteraction(String s) {
+        Fragment fBinary = new BinaryFragment();
+        Bundle b = new Bundle();
+        b.putString("decimal", s);
+        fBinary.setArguments(b);
+
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.fragment_output, fBinary).commit();
+
+    }
 }
